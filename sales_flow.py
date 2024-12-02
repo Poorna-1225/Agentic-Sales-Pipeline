@@ -2,10 +2,12 @@ from crewai import Flow
 from crewai.flow.flow import  listen, start
 from src.lead_qualification_crew import lead_scoring_crew
 from src.email_engagement_crew import email_writing_crew
+from IPython.display import IFrame
 
+# Define the SalesPipeline class to represent our sales pipeline flow
 class SalesPipeline(Flow):
 
-    @start
+    @start()
     def fetch_leads(self):
         # pull leads from the database.
         leads =[
@@ -51,3 +53,21 @@ class SalesPipeline(Flow):
 
 
 salespipeline_flow = SalesPipeline()
+
+emails = salespipeline_flow.kickoff()
+
+salespipeline_flow.plot()
+
+IFrame(src='./flow_images/crewai_flow.html', width='150%', height=600)
+
+import pandas as pd
+
+# Convert UsageMetrics instance to a DataFrame
+df_usage_metrics = pd.DataFrame([salespipeline_flow.state["score_crews_results"][0].token_usage.dict()])
+
+# Calculate total costs
+costs = 0.150 * df_usage_metrics['total_tokens'].sum() / 1_000_000
+print(f"Total costs: ${costs:.4f}")
+
+# Display the DataFrame
+#df_usage_metrics
