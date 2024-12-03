@@ -1,2 +1,8 @@
 crewai
 crewai_tools
+
+
+livekit-agents #
+livekit-plugins-openai # if we don't want to use openai we can replace openai llm provider with any other provider like llama
+livekit-plugins-silero
+python-dotenv
